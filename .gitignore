@@ -1,1 +1,16 @@
 node_modules
+.env
+build/asset-manifest.json
+build/index.html
+build/precache-manifest.ecf132b8a876fa5cae5537a46105a409.js
+build/service-worker.js
+build/static/css/2.383dd1f1.chunk.css
+build/static/css/2.383dd1f1.chunk.css.map
+build/static/css/main.8a977ebe.chunk.css
+build/static/css/main.8a977ebe.chunk.css.map
+build/static/js/2.8a817f21.chunk.js
+build/static/js/2.8a817f21.chunk.js.map
+build/static/js/main.e9115c2c.chunk.js
+build/static/js/main.e9115c2c.chunk.js.map
+build/static/js/runtime~main.a8a9905a.js
+build/static/js/runtime~main.a8a9905a.js.map

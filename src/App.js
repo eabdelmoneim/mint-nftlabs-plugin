@@ -2,13 +2,17 @@ import React from "react";
 import "./styles.css";
 import "antd/dist/antd.css";
 import { Button } from "antd";
+import "./nftlabs-utils";
 
+import { initializeSDKConnections, queryApps } from "./nftlabs-utils";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider"
 
 const {NFTLabsSDK} = require("@nftlabs/sdk");
 const { ethers } = require('ethers')
+
+
 
 const providerOptions = {
   walletconnect: {
@@ -42,17 +46,21 @@ export default function App() {
     }
 
     // Get list of accounts of the connected wallet
-  const accounts = await web3.eth.getAccounts();
+    const accounts = await web3.eth.getAccounts();
 
-  // MetaMask does not give you all accounts, only the selected account
-  console.log("Got accounts", accounts);
-  let selectedAccount = accounts[0];
-  console.log(`Wallet address: ${selectedAccount.toLowerCase()}`);
-  const chainId = await web3.eth.getChainId();
-  console.log(`chain ID ${chainId}`);
+    // MetaMask does not give you all accounts, only the selected account
+    console.log("Got accounts", accounts);
+    let selectedAccount = accounts[0];
+    console.log(`Wallet address: ${selectedAccount.toLowerCase()}`);
+    const chainId = await web3.eth.getChainId();
+    console.log(`chain ID ${chainId}`);
 
-  mintSDK = new NFTLabsSDK(web3.eth.provider);
-  console.log(`initialized SDK connection`);
+    // init SDK connections
+    initializeSDKConnections();
+
+   // mintSDK = new NFTLabsSDK(web3.eth.provider);
+   // console.log(`initialized SDK connection`);
+    queryApps();
   }
 
   async function connect(web3Modal) {
