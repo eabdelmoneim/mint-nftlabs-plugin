@@ -6,7 +6,9 @@ import { Button } from "antd";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider"
-import NFTLabsSDK from "@nftlabs/sdk"
+
+const {NFTLabsSDK} = require("@nftlabs/sdk");
+const { ethers } = require('ethers')
 
 const providerOptions = {
   walletconnect: {
@@ -21,11 +23,14 @@ const providerOptions = {
 let provider = null;
 let web3 = null;
 let accounts = null;
+let mintSDK = null;
+let sdkProvider = null;
 
 export default function App() {
   async function mint() {
     if (!provider) {
       const web3Modal = new Web3Modal({
+        network: "mumbai",
         cacheProvider: true, // optional
         providerOptions, // required
         disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
@@ -41,7 +46,13 @@ export default function App() {
   console.log("Got accounts", accounts);
   let selectedAccount = accounts[0];
   console.log(`Wallet address: ${selectedAccount.toLowerCase()}`);
-   
+  const chainId = await web3.eth.getChainId();
+  console.log(`chain ID ${chainId}`);
+  
+  //sdkProvider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/yKUu7QI3ydCfyAZnZhLxADY70QrSRTA1");
+
+  mintSDK = new NFTLabsSDK(web3.eth.provider);
+  console.log(`initialized SDK connection`);
   }
 
   async function connect(web3Modal) {
@@ -73,6 +84,7 @@ async function initializeMinting() {
 async function onConnect() {
 
   const web3Modal = new Web3Modal({
+    network: "mumbai",
     cacheProvider: true, // optional
     providerOptions, // required
     disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
@@ -119,7 +131,7 @@ async function onConnect() {
 
       <div className="showConnectBtn">
         <Button type="primary" onClick={() => onConnect()}>
-          Connect Wallet
+          Mint NFT
         </Button>
       </div>
     </div>
