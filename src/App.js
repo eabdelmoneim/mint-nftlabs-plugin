@@ -26,6 +26,8 @@ let accounts = null;
 let mintSDK = null;
 let sdkProvider = null;
 
+let nftURI = null;
+
 export default function App() {
   async function mint() {
     if (!provider) {
@@ -81,6 +83,11 @@ async function initializeMinting() {
  */
 async function onConnect() {
 
+  if(!nftURI){
+    print("ERROR: set URI to mint");
+    return;
+  }
+
   const web3Modal = new Web3Modal({
     network: "mumbai",
     cacheProvider: true, // optional
@@ -119,19 +126,29 @@ async function onConnect() {
   function print(str) {
     const p = document.createElement("p");
     p.innerText = str;
-    document.getElementById("userWalletAddress").appendChild(p);
+    document.getElementById("statusArea").appendChild(p);
+  }
+
+  function setURIValue(path) {
+    nftURI = path;
+    console.log(`URI to NFT set to ${nftURI}`);
   }
 
   return (
     <div className="App">
       <h1>Simple Mint NFT App</h1>
       <h2>Using web3Modal and NFT Labs SDK</h2>
-
+      <div className="nftURI">
+        Metadata URI <input onChange={e => setURIValue(e.target.value)} placeholder="path to URI file" size="100"/> 
+      </div>
       <div className="showConnectBtn">
-        <Button type="primary" onClick={() => onConnect()}>
+        <br/>
+        <Button id="mintButton" type="primary" onClick={() => onConnect()}>
           Mint NFT
         </Button>
+        <label id="statusArea" style={{color:'tomato'}}></label>
       </div>
+      
     </div>
   );
 }
