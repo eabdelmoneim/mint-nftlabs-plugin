@@ -48,8 +48,6 @@ export default function App() {
   console.log(`Wallet address: ${selectedAccount.toLowerCase()}`);
   const chainId = await web3.eth.getChainId();
   console.log(`chain ID ${chainId}`);
-  
-  //sdkProvider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/yKUu7QI3ydCfyAZnZhLxADY70QrSRTA1");
 
   mintSDK = new NFTLabsSDK(web3.eth.provider);
   console.log(`initialized SDK connection`);
