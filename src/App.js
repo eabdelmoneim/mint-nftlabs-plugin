@@ -19,7 +19,7 @@ const providerOptions = {
     package: WalletConnectProvider,
     options: {
       // hard coded test key will be parameter
-      infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
+      infuraId: `${process.env.REACT_APP_INFURA_ID}`,
     }
   }
 };
