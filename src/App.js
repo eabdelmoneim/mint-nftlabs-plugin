@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import { Button } from "antd";
 import "./nftlabs-utils";
 
-import { initializeSDKConnections, queryApps } from "./nftlabs-utils";
+import { initializeSDKConnections, mintNFT, queryApps } from "./nftlabs-utils";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider"
@@ -56,11 +56,12 @@ export default function App() {
     console.log(`chain ID ${chainId}`);
 
     // init SDK connections
-    initializeSDKConnections();
+    await initializeSDKConnections();
 
    // mintSDK = new NFTLabsSDK(web3.eth.provider);
    // console.log(`initialized SDK connection`);
-    queryApps();
+   // queryApps();
+    mintNFT(nftURI, selectedAccount);
   }
 
   async function connect(web3Modal) {

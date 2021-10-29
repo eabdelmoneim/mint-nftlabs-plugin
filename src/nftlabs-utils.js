@@ -5,6 +5,8 @@ const { ethers } = require('ethers');
 let dAppWallet = null;
 let sdk = null;
 let sdkProvider = null;
+let appModule = null;
+let nftModule = null;
 
 export async function initializeSDKConnections() {
     console.log(`=== initializing SDK connections ===`);
@@ -17,7 +19,22 @@ export async function initializeSDKConnections() {
     sdkProvider = new ethers.providers.JsonRpcProvider(`${process.env.REACT_APP_PROVIDER_URL}`);
     dAppWallet = new ethers.Wallet(`${process.env.REACT_APP_ADMIN_WALLET_PRIVATE_KEY}`, sdkProvider); 
     sdk = new NFTLabsSDK(dAppWallet);
-    console.log(`initialized admin SDK connection`)
+    console.log(`initialized SDK connection`);
+
+    const apps = await sdk.getApps();
+    if(apps.length > 0) {
+        appModule = apps[0];
+        console.log(`Found App: ${appModule.metadata.name} = ${appModule.address}`);
+
+        // initialize nft module
+        if(process.env.REACT_APP_NFT_MODULE_ADDRESS != null) {
+            nftModule = sdk.getNFTModule(process.env.REACT_APP_NFT_MODULE_ADDRESS);
+            console.log(`found NFT Module with address ${process.env.REACT_APP_NFT_MODULE_ADDRESS}`)
+        }
+    } else {
+        throw Error(`no apps defined in thirdweb console`)
+    }
+
     //clientSdk = new NFTLabsSDK(clientWallet)
     //console.log(`initialized client SDK connection`)
   }
@@ -35,3 +52,18 @@ export async function queryApps(){
       throw Error(`could not find any apps associated with ${sdk.address} - you need to use private key of wallet used to create apps in Console UI`)
     }
   }
+
+export async function mintNFT(uri, toAccount) {
+    
+    // verify SDK has been initialized
+    // if not initialize here
+    if(nftModule == null) {
+        initializeSDKConnections();
+    }
+
+
+    console.log(`minting to ${toAccount} with uri ${uri}`)
+    let nftMetadata = await nftModule.mintTo(toAccount, uri); 
+    console.log(`successfully minted NFT ${nftMetadata.id}`);
+    
+}
